@@ -41,7 +41,7 @@ def main():
     args = parse_args()
     data = DataModule(path=args.path, tokenizer=args.model_name, batch_size=8)
     data.prepare_data()
-    data.setup()
+    data.setup(stage="fit")
     model = DistilBert(
         model_config={
             "model_name": args.model_name,
@@ -79,10 +79,7 @@ def main():
         callbacks=[checkpoint_callback, early_stopping_callback]
     )
 
-    train_data_loader = data.train_dataloader()
-    val_data_loader = data.val_dataloader()
-
-    trainer.fit(model, train_dataloaders=train_data_loader, val_dataloaders=val_data_loader)
+    trainer.fit(model, data)
 
 if __name__ == "__main__":
     main()
