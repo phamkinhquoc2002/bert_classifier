@@ -27,11 +27,6 @@ class DataModule(pl.LightningDataModule):
         except Exception as e:
             print(f"Error loading dataset: {e}")
             raise e
-        
-    @property
-    def classes_map(self):
-        labels = sorted(set(self.dataset["train"]["label"]))
-        return {label: idx for idx, label in enumerate(labels)}
     
     def label_tokenize(self, examples):
         examples["label"] = [self.classes_map.get(label) for label in examples["label"]]
@@ -62,6 +57,8 @@ class DataModule(pl.LightningDataModule):
         
         assert type(self.train_data)==Dataset, f"Train Data set after split: {type(self.train_data)}"
         assert type(self.validation_data)==Dataset, f"Validation Data set after split: {type(self.validation_data)}"
+
+        self.classes_map = {label: idx for idx, label in enumerate(sorted(set(self.train_data["label"])))}
 
         self.train_data = self.train_data.map(self.text_tokenize, batched=True, remove_columns=["text"])
         self.train_data = self.train_data.map(self.label_tokenize, batched=True)
