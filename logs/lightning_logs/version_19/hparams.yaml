@@ -1,6 +1,0 @@
-model_config:
-  model_name: distilbert/distilgpt2
-  num_classes: 18
-training_config:
-  distributed_strategy: single
-  optmizer: sdg
