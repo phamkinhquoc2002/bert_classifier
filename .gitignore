@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 logs
 env
+testing.ipynb
+
 # C extensions
 *.so
 
