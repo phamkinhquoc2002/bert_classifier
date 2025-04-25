@@ -4,7 +4,8 @@ __pycache__/
 *$py.class
 logs/
 testing.ipynb
-
+wandb/
+models/
 # C extensions
 *.so
 

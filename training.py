@@ -5,7 +5,8 @@ import torch
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from lightning.pytorch.strategies import FSDPStrategy, DDPStrategy
+from lightning.pytorch.strategies import FSDPStrategy
+from pytorch_lightning.loggers import WandbLogger
 
 from dataloader import DataModule
 from model import DistilBert
@@ -35,6 +36,12 @@ def parse_args():
                         help="The distributed Strategy that you want to use",
                         choices=["single", "FSDP", "DDP"],
                         default="single")
+    parser.add_argument("--resume-from-checkpoint",
+                        type=str,
+                        help="Path to the checkpoint to resume from",
+                        default=None
+
+    )
     return parser.parse_args()
 
 def main():
@@ -54,11 +61,12 @@ def main():
             )
     
     checkpoint_callback = ModelCheckpoint(
-            dirpath="./models", monitor="val_loss", mode="min"
+            dirpath="./models", monitor="val_loss", mode="min", save_last=True
         )
     early_stopping_callback = EarlyStopping(
         monitor="val_loss", patience=3, verbose=True, mode="min"
     )
+    wandb_logger = WandbLogger(project="vietnamese-classification")
 
     strategy = args.distributed_strategy
     if strategy == "FSDP":
@@ -76,10 +84,17 @@ def main():
         devices=(-1 if torch.cuda.is_available() else 0),
         max_epochs=args.epochs,
         strategy=distributed_strategy,
+        logger=wandb_logger,
         callbacks=[checkpoint_callback, early_stopping_callback]
     )
 
-    trainer.fit(model, data)
+    resume_ckpt_path=None
+    if args.resume_from_checkpoint:
+        resume_ckpt_path = args.resume_from_checkpoint
+    elif checkpoint_callback.last_model_path and os.path.exists(checkpoint_callback.last_model_path):
+        resume_ckpt_path = checkpoint_callback.last_model_path
+    
+    trainer.fit(model, data, ckpt_path=resume_ckpt_path)
 
 if __name__ == "__main__":
     main()
