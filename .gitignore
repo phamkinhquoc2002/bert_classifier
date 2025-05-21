@@ -5,7 +5,10 @@ __pycache__/
 logs/
 testing.ipynb
 wandb/
-models/
+#models/
+outputs/
+production_models/
+.dvc
 # C extensions
 *.so
 

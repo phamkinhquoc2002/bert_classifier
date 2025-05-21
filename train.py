@@ -14,7 +14,7 @@ from dataloader import DataModule
 from model import DistilBert
 from samples_logger import SamplesLogger
 
-@hydra.main(config_path="./configs", config_name="config")
+@hydra.main(config_path="./configs", config_name="config", version_base="1.1")
 def main(cfg):
     os.chdir(hydra.utils.get_original_cwd())
     print(OmegaConf.to_yaml(cfg))
@@ -59,6 +59,9 @@ def main(cfg):
     resume_ckpt_path=None
     if cfg.training.resume_from_checkpoint:
         resume_ckpt_path = os.path.abspath(cfg.training.resume_from_checkpoint)
+        if not os.path.exists(resume_ckpt_path):
+            print(f"Warning: Checkpoint path {resume_ckpt_path} does not exist. Starting fresh training.")
+            resume_ckpt_path = None
     elif checkpoint_callback.last_model_path and os.path.exists(checkpoint_callback.last_model_path):
         resume_ckpt_path = checkpoint_callback.last_model_path
     

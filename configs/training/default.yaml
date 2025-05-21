@@ -4,6 +4,6 @@ distributed_strategy: single
 optimizer: adamw
 num_classes: 18
 batch_size: 8
-epochs: 5
+epochs: 1
 deterministic: True
 log_every_n_steps: 100
