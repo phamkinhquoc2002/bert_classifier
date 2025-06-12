@@ -37,5 +37,5 @@ cd bert_classifier
 ### 4. Run the Docker Image for inference
 Set the GDRIVE_FOLDER_ID in your terminal.
 
-```docker run -d --name inference -e DVC_REMOTE_URI=gdrive://${GDRIVE_FOLDER_ID} -v ./creds.json:/run/secrets/gdrive_creds.json:ro -p 8000:8000 -t inference:latest .
+```docker run -d --name inference -e DVC_REMOTE_URI=gdrive://${GDRIVE_FOLDER_ID} -v ./creds.json:/run/secrets/gdrive_creds.json:ro -p 8000:8000 inference:latest
 ```
