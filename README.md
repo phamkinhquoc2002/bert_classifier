@@ -3,7 +3,8 @@
 This repository contains a BERT-based text classification system built with Torch Lightning and integrated into an MLOps workflow. It is designed for modular, scalable, and reproducible training, evaluation, and deployment pipelines.
 
 ## 📦 Project Structure
-```├── Dockerfile
+```
+├── Dockerfile
 ├── LICENSE
 ├── README.md
 ├── app.py
