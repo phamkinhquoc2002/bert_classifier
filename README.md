@@ -31,7 +31,11 @@ git clone https://github.com/phamkinhquoc2002/bert_classifier.git
 cd bert_classifier
 ```
 ### 2. Start the training by defining configurations in HYDRA.
-
+To train the model:
+```
+python train.py
+```
+Metrics will be logged into wandb.
 ### 3. Build the Docker Image
 ```
 docker build -t inference:latest .
