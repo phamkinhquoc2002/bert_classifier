@@ -1,6 +1,6 @@
 # 🧠 BERT Classifier with MLOps Integration
 
-This repository contains a BERT-based text classification system built with Hugging Face Transformers and integrated into an MLOps workflow. It is designed for modular, scalable, and reproducible training, evaluation, and deployment pipelines.
+This repository contains a BERT-based text classification system built with Torch Lightning and integrated into an MLOps workflow. It is designed for modular, scalable, and reproducible training, evaluation, and deployment pipelines.
 
 ## 📦 Project Structure
 ```├── Dockerfile
