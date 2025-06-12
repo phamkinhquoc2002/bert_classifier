@@ -1,0 +1,31 @@
+name: Docker Image Build
+
+on: [push]
+
+jobs:
+  mlops-container:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Write GDrive creds to file
+        run: |
+          mkdir -p secrets
+          echo "${{  secrets.CRED  }}" >> secrets/creds.json
+
+      - name: Build the Docker Image
+        run: |
+          docker build tag inference:latest
+
+      - name: Run The Docker Container
+        run: |
+          docker network create data || true
+          docker run -d \
+            --name inference \
+            --network data \
+            -v ${{ github.workspace }}/secrets/creds.json:
+            -e DVC_REMOTE_FILE=gdrive://${{ secrets.G_DRIVE_FOLDER_ID }} \
+            -p 8000:8000 \
+            inference:latest 

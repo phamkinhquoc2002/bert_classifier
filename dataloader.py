@@ -17,7 +17,7 @@ class DataModule(pl.LightningDataModule):
         self.batch_size = batch_size
         self.path = path
         self.tokenizer = AutoTokenizer.from_pretrained(tokenizer)
-        self.tokenizer.pad_token = self.tokenizer.eos_token
+        if self.tokenizer.pad_token is None:self.tokenizer.pad_token = self.tokenizer.eos_token
 
     def prepare_data(self):
         try:
@@ -39,6 +39,7 @@ class DataModule(pl.LightningDataModule):
             return_attention_mask=True,
             padding="max_length",
             padding_side="right",
+            max_length=1024
         )
 
     def setup(self, stage: str = None):
