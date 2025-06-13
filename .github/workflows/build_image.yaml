@@ -13,11 +13,11 @@ jobs:
       - name: Write GDrive creds to file
         run: |
           mkdir -p secrets
-          echo "${{  secrets.CRED  }}" >> secrets/creds.json
+          echo "${{ secrets.CRED }}" >> secrets/creds.json
 
       - name: Build the Docker Image
         run: |
-          docker build tag inference:latest
+          docker build -t inference:latest .
 
       - name: Run The Docker Container
         run: |
@@ -25,7 +25,7 @@ jobs:
           docker run -d \
             --name inference \
             --network data \
-            -v ${{ github.workspace }}/secrets/creds.json:
-            -e DVC_REMOTE_FILE=gdrive://${{ secrets.G_DRIVE_FOLDER_ID }} \
+            -v ${{ github.workspace }}/secrets/creds.json:/run/secrets/creds.json \
+            -e DVC_REMOTE_URI=gdrive://${{ secrets.G_DRIVE_FOLDER_ID }} \
             -p 8000:8000 \
             inference:latest 
