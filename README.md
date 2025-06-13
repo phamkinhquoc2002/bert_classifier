@@ -15,7 +15,6 @@ This repository contains a BERT-based text classification system built with Torc
 ├── dataloader.py
 ├── model.py
 ├── models
-│   └── last.ckpt.dvc
 ├── onx_converter.py
 ├── predictor.py
 ├── requirements.txt
@@ -32,17 +31,24 @@ cd bert_classifier
 ```
 ### 2. Start the training by defining configurations in HYDRA.
 To train the model:
-```
+```bash
 python train.py
 ```
 Metrics will be logged into wandb.
-### 3. Build the Docker Image
+### 3. DVC Configuration.
+```bash
+dvc init
+dvc remote add -d storage gdrive://19JK5AFbqOBlrFVwDHjTrf9uvQFtS0954
+dvc add models/last.ckpt
 ```
+Metrics will be logged into wandb.
+### 3. Build the Docker Image
+```bash
 docker build --build-arg GDRIVE_FOLDER_ID=$GDRIVE_FOLDER_ID  -t inference:latest .
 ```
 ### 4. Run the Docker Image for inference
 Set the GDRIVE_FOLDER_ID in your terminal.
 
-```
+```bash
 docker run -d --name inference -e DVC_REMOTE_URI=gdrive://${GDRIVE_FOLDER_ID} -v ./creds.json:/run/secrets/gdrive_creds.json:ro -p 8000:8000 inference:latest
 ```
