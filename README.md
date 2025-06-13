@@ -38,7 +38,7 @@ python train.py
 Metrics will be logged into wandb.
 ### 3. Build the Docker Image
 ```
-docker build -t inference:latest .
+docker build --build-arg GDRIVE_FOLDER_ID=$GDRIVE_FOLDER_ID  -t inference:latest .
 ```
 ### 4. Run the Docker Image for inference
 Set the GDRIVE_FOLDER_ID in your terminal.
