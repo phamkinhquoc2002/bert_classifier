@@ -38,15 +38,15 @@ Metrics will be logged into wandb.
 ### 3. DVC Configuration.
 ```bash
 dvc init
-dvc remote add -d storage gdrive://19JK5AFbqOBlrFVwDHjTrf9uvQFtS0954
+dvc remote add -d storage gdrive://$GDRIVE_FOLDER_ID
 dvc add models/last.ckpt
 ```
 Metrics will be logged into wandb.
-### 3. Build the Docker Image
+### 4. Build the Docker Image
 ```bash
 docker build --build-arg GDRIVE_FOLDER_ID=$GDRIVE_FOLDER_ID  -t inference:latest .
 ```
-### 4. Run the Docker Image for inference
+### 5. Run the Docker Image for inference
 Set the GDRIVE_FOLDER_ID in your terminal.
 
 ```bash
