@@ -7,7 +7,7 @@ WORKDIR /app
 ARG DVC_REMOTE_URI
 ENV DVC_REMOTE_URI=${DVC_REMOTE_URI}
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 RUN dvc init 
 RUN dvc remote add -d storage ${DVC_REMOTE_URI}
